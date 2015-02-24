@@ -36,7 +36,7 @@ echo номер_ноды > /tmp/zookeeper/myid
 ```
 Номер ноды это машины в кластере 1,2,3. То есть для первой машины: ```echo 1 > /tmp/zookeeper/myid```. Для остальных аналогично. Если этого не сделать zookeeper не запустится.
 
-Редактируем конфиг config/zookeeper.property. Надо добавить строки:
+Редактируем конфиг config/zookeeper.property. Надо в коне добавить строки:
 ```
 server.1=kf1.dom.ru:2888:3888
 server.2=kf2.dom.ru:2888:3888
@@ -45,27 +45,12 @@ server.3=kf3.dom.ru:2888:3888
 initLimit=5
 syncLimit=2
 ```
-В итоге получится чтото типа вот этого:
-```
-dataDir=/tmp/zookeeper
-# the port at which the clients will connect
-clientPort=2181
-# disable the per-ip limit on the number of connections since this is a non-production config
-maxClientCnxns=0
-
-server.1=kf1.dom.ru:2888:3888
-server.2=kf2.dom.ru:2888:3888
-server.3=kf3.dom.ru:2888:3888
-#add here more servers if you want
-initLimit=5
-syncLimit=2
-```
-После этого можно запустить zookeeper:
+Можно запустить zookeeper:
 ```
 bin/zookeeper-server-start.sh config/zookeeper.properties
 ```
-Если у вам много памяти то все заработает. Если меньше то надо умерить аппетиты zookeepera для этого выставляем переменную KAFKA_HEAP_OPTS:``` export KAFKA_HEAP_OPTS="-Xmx256M -Xms256M"```. Для экспериметов этого будет достаточно.
-Теперь повторяем эту настройку на всех хостах (не забываем менять id). Можно запустить zookeeper на всех машинах. В логах на консоль он будет выводить много разных сообщений о выборах мастера и все такое прочее. 
+Если у вам много памяти то все заработает. Если меньше, надо умерить аппетиты zookeepera, выставляем переменную KAFKA_HEAP_OPTS:``` export KAFKA_HEAP_OPTS="-Xmx256M -Xms256M"```. Для экспериметов этого будет достаточно.
+Теперь повторяем эту настройку на всех хостах (не забываем менять id). Запускаем zookeeper на оставшихся машинах. В логах на консоль он будет выводить много разных сообщений о выборах мастера и все такое прочее. 
 
 #Kafka
 Редактируем config/server.properties:
@@ -74,7 +59,7 @@ broker.id=номер_ноды
 ....
 zookeeper.connect=kf1.dom.ru:2181,kf2.dom.ru:2181,kf3.dom.ru:2181
 ```
-Можно запускать kafka:
+Запускаем kafkу:
 ```
 bin/kafka-server-start.sh config/server.properties
 ```
@@ -82,15 +67,17 @@ bin/kafka-server-start.sh config/server.properties
 
 #Работа
 Протестируем.
-Создаем топик (запускаем на первой машине):
+Создаем топик на первой машине:
 ```
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 3 --topic test2
 ```
-Создали топик тест. Теперь на другой машине скажем на kf3:
+Создали топик тест. 
+Теперь на другой машине скажем на kf3:
 ```
 bin/kafka-topics.sh --zookeeper localhost:2181 --list
 ```
-Видим список наших топиков. Один test2.
+Видим список наших топиков. 
+Один test2. Опиши нам его:
 ```
 bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic test2
 Topic:test2	PartitionCount:3	ReplicationFactor:3	Configs:
@@ -99,16 +86,19 @@ Topic:test2	PartitionCount:3	ReplicationFactor:3	Configs:
 	Topic: test2	Partition: 2	Leader: 1	Replicas: 1,2,3	Isr: 1,3,2
 ```
 Вроде все ок.
-Теперь собственно зачем мы это настраивали, запускаем producer:
+Запускаем producer:
 ```
 bin/kafka-console-producer.sh --broker-list kf1.miared.ru:9092,kf2.miared.ru:9092,kf3.miared.ru:9092 --topic test2
 ```
 Набираем на клавиатуре все уходит в kafkу. 
-consumer - на другой машине естественно :):
+Запускаем consumer - на другой машине естественно :):
 ```
 bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic test2
 ````
-Должен выводить то, что вы вводите на консоле. Можно на нескольких машинах. 
+Должен выводить то, что вы вводите на консоле. Можно запустить несколько consumeroв на нескольких машинах. 
+
+Все работает ! 
+
 Дальше читайте kafka.apache.org там все есть.
 
 И на последок скриптец который все пускает:
