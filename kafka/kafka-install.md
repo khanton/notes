@@ -6,10 +6,10 @@
 ##Перед началом.
 
 1. Проапгрейдил все пакеты:
-```
-sudo apt-get update
-sudo apt-get upgrade
-```
+ ```bash
+ sudo apt-get update
+ sudo apt-get upgrade
+ ```
 2. Создал пользователя kafka.
 
 3. Поставил java. Я вобщем не большой знаток отличий разных версий java по этому:
@@ -24,10 +24,10 @@ sudo apt-get openjdk-7-jre-headless
 Что мы будем настраивать ? Мы настроем три брокера kafka и три zookeeperа.
 
 ###Качаем распаковываем.
-'''
+```
  wget http://apache-mirror.rbc.ru/pub/apache/kafka/0.8.2.0/
  tar zxvf kafka_2.9.2-0.8.2.0.tgz
-'''
+```
 
 ###Zookeeper
 
