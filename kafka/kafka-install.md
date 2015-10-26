@@ -88,7 +88,7 @@ Topic:test2	PartitionCount:3	ReplicationFactor:3	Configs:
 Вроде все ок.
 Запускаем producer:
 ```
-bin/kafka-console-producer.sh --broker-list kf1.miared.ru:9092,kf2.miared.ru:9092,kf3.miared.ru:9092 --topic test2
+bin/kafka-console-producer.sh --broker-list kf1.dom.ru:9092,kf2.dom.ru:9092,kf3.dom.ru:9092 --topic test2
 ```
 Набираем на клавиатуре все уходит в kafkу. 
 Запускаем consumer - на другой машине естественно :):
