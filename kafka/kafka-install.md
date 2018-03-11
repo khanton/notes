@@ -1,9 +1,9 @@
-#Настройка кластера Kafka
+# Настройка кластера Kafka
 
 Для начала нам нужны минимум три хоста. Я взял их в dogitalocean.com. Взял ubuntu 14.10 с гигабайтом пямяти. Гигабайта все равно было мало.
 Трем машинам я дал три доменных имя kf1.dom.ru, kf2.dom.ru, kf3.dom.ru. Чтобы было удобнее и не вбивать ip адреса.
 
-##Перед началом.
+## Перед началом.
 
 1. Проапгрейдил все пакеты:
  ```
@@ -18,18 +18,18 @@ sudo apt-get openjdk-7-jre-headless
 
 На этом предварительные настройки закончились.
 
-##Настройка.
+## Настройка.
 
 Это будет кластер с тремя брокерами kafka и тремя zookeeperами. Все дальнейшие команды выполняем из под пользователя kafka.
 
-###Качаем распаковываем.
+### Качаем распаковываем.
 ```
  wget http://apache-mirror.rbc.ru/pub/apache/kafka/0.8.2.0/
  tar zxvf kafka_2.9.2-0.8.2.0.tgz
 ```
 Настраивать будем в директории kafka_2.9.2-0.8.2.0.
 
-###Zookeeper
+### Zookeeper
 ```
 mkdir -p /tmp/zookeeper
 echo номер_ноды > /tmp/zookeeper/myid
@@ -52,7 +52,7 @@ bin/zookeeper-server-start.sh config/zookeeper.properties
 Если у вам много памяти то все заработает. Если меньше, надо умерить аппетиты zookeepera, выставляем переменную KAFKA_HEAP_OPTS:``` export KAFKA_HEAP_OPTS="-Xmx256M -Xms256M"```. Для экспериметов этого будет вполне достаточно.
 Теперь повторяем эту настройку на всех хостах (не забываем менять id). Запускаем zookeeper на оставшихся машинах. В логах на консоль он будет выводить много разных сообщений о выборах мастера и все такое прочее. 
 
-###Kafka
+### Kafka
 Редактируем config/server.properties:
 ```
 broker.id=номер_ноды
@@ -65,7 +65,7 @@ bin/kafka-server-start.sh config/server.properties
 ```
 Повторяем на оставшихся машинах кластера и все должно заработать.
 
-##Тестируем
+## Тестируем
 Протестируем.
 Создаем топик на первой машине:
 ```
@@ -111,14 +111,3 @@ nohup bin/zookeeper-server-start.sh config/zookeeper.properties > zookeeper.cons
 nohup bin/kafka-server-start.sh config/server.properties > kafka.console &
 
 ```
-
-
-
-
-
-
-
-
-
-
-
