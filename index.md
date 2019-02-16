@@ -1,2 +1,2 @@
 # Сайт
-[kafka](kafka/kafka-install.html)
+[kafka](/kafka/kafka-install.html)
