@@ -6,7 +6,7 @@
 
 Давате настроим эту утилиту и насладимся ее удобством.
 
-## Скачиваем и устанвливаем:
+## Скачиваем и устанавливаем:
 ```
 curl https://raw.githubusercontent.com/xetys/kubeconfig-loader/master/kubeconfig-loader > kubeconfig-loader
 chmod kubeconfig-loader
