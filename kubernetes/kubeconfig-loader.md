@@ -21,7 +21,7 @@ kubeconfig-loader add azure-prj ~/.kube/config
 ```
 kubeconfig-loader ls
 ```
-Переключаемся на следующий кластер. Наприем для переклчения на hetzner надо выполнить следующую команду:
+Переключаемся на следующий кластер. Наприем для переключения на hetzner надо выполнить следующую команду:
 ```
 hetzner-kube cluster kubeconfig starship
 ```
@@ -38,5 +38,5 @@ kubeconfig-loader use azure-prj
 kubeconfig-loader use azure-prj
 ```
 
-Удачи в настроике !
+Удачи в настройке !
 
